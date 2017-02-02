@@ -1,0 +1,90 @@
+<script type="text/x-red" data-template-name="kue-queue">
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i> 
+            Name
+        </label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+         <label for="node-input-queueName">
+             <i class="fa fa-file"></i> 
+             Queue Name
+        </label>
+         <input id="node-input-queueName" type="text">
+    </div>
+    <div class="form-row">
+        <label for="node-input-attempts">
+            <i class="fa fa-tag"></i> 
+            Attempts
+        </label>
+        <input type="text" id="node-input-attempts">
+    </div>
+      <div class="form-row">
+        <label for="node-input-ttl">
+            <i class="fa fa-tag"></i> 
+            TTL
+        </label>
+        <input type="text" id="node-input-ttl">
+    </div>
+    <div class="form-row">
+        <label for="node-input-queuePrefix">
+            <i class="fa fa-tag"></i> 
+            Prefix REDIS
+        </label>
+        <input type="text" id="node-input-queuePrefix">
+    </div>
+    <div class="form-row">
+        <label for="node-input-redisHost">
+            <i class="fa fa-tag"></i> 
+            Host REDIS
+        </label>
+        <input type="text" id="node-input-redisHost">
+    </div>
+    <div class="form-row">
+        <label for="node-input-redisPort">
+            <i class="fa fa-tag"></i> 
+            Port REDIS
+        </label>
+        <input type="text" id="node-input-redisPort">
+    </div>
+    
+</script>
+
+<script type="text/x-red" data-help-name="kue-queue">
+    <p>Processa file com framework kue usando Redis</p>    
+    <p>No payload, é passado uma função done().</p>
+    <p>done(). -> Success</p>
+    <p>done([ERROR]). -> Volta para a fila com erro</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('kue-queue', {
+        category: 'input',
+        defaults: {
+            name : {text : ""},
+            queueName : {text : ""},
+            queuePrefix : {value : "q"},
+            redisPort : {value : 6379},
+            redisHost : {value : "localhost"},
+            attempts : {value : 5},
+            ttl : {value : 5000}
+        },
+        color: "#5ca5e2",
+        inputs: 1,
+        outputs: 0,
+        icon: "kue-send.png",
+        label: function () {
+            return this.name || this.queueName;
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            $("#node-input-filetype").on("change", function () {
+                if (this.value === "text") { $("#node-kue-split").show(); }
+                else { $("#node-kue-split").hide(); }
+            });
+        }
+    });
+</script>

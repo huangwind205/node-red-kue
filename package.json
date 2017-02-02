@@ -1,0 +1,22 @@
+{
+  "name": "node-red-kue",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "William Lima Pereira",
+  "license": "MIT",
+  "dependencies": {
+    "kue": "^0.11.5"
+  },
+  "keywords": [
+    "node-red"
+  ],
+  "node-red": {
+    "nodes": {
+      "kue-process": "kue-process/kue-process.js",
+      "kue-queue": "kue-queue/kue-queue.js"
+    }
+  }
+}
