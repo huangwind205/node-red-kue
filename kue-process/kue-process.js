@@ -33,7 +33,7 @@ module.exports = function (RED) {
             statusQueues[node.queueName] = done;
 
             node.send({
-                payload:job, 
+                payload:job.data, 
                 done: (err, data) => {
                     done(err, data);
                     delete statusQueues[node.queueName];
