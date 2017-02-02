@@ -24,20 +24,23 @@ module.exports = function (RED) {
 
         node.status({ fill: "green", shape: "dot", text: "wait" });
 
-        let statusQueues = {};
+        node.statusQueues = {};
+
+        node.qtde = node.qtde || 0;
 
         queue.process(node.queueName, function (job, done) {
 
             node.status({ fill: "yellow", shape: "dot", text: "proccessing ... " });
 
-            statusQueues[node.queueName] = done;
+            node.statusQueues[node.queueName] = done;
 
             node.send({
-                payload:job.data, 
+                payload: job.data,
                 done: (err, data) => {
                     done(err, data);
-                    delete statusQueues[node.queueName];
-                    node.status({ fill: "green", shape: "dot", text: "wait" });
+                    delete node.statusQueues[node.queueName];
+                    node.qtde++;
+                    node.status({ fill: "green", shape: "dot", text: node.qtde + " proccessed" });
                 }
             });
         });
@@ -49,9 +52,14 @@ module.exports = function (RED) {
         node.on("close", function () {
             node.status({ fill: "red", shape: "dot", text: "killed" });
 
-            for (let o in statusQueues) {
-                statusQueues[o](new Error("KILLED"));
-            }            
+            for (let o in node.statusQueues) {
+                node.statusQueues[o](new Error("KILLED"));
+            }
+
+            queue.shutdown(0, function (err) {
+                console.log('Kue shutdown: ', err || '');                
+            });
+
         });
     }
 
