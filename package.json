@@ -1,7 +1,7 @@
 {
   "name": "node-red-kue",
   "version": "1.0.0",
-  "description": "",
+  "description": "Kue is a priority job queue backed by redis, built for node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
